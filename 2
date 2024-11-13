@@ -1,0 +1,36 @@
+import java.util.Scanner;
+import java.util.Arrays;
+
+public class FrameSorter {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the number of frames: ");
+        int n = scanner.nextInt();
+        int[] frames = new int[n];
+
+        System.out.println("Enter the frame values:");
+        for (int i = 0; i < n; i++) {
+            frames[i] = scanner.nextInt();
+        }
+
+        System.out.println("Original Frames: " + Arrays.toString(frames));
+        bubbleSort(frames);
+        System.out.println("Sorted Frames: " + Arrays.toString(frames));
+
+        scanner.close();
+    }
+
+    public static void bubbleSort(int[] frames) {
+        int n = frames.length;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - 1 - i; j++) {
+                if (frames[j] > frames[j + 1]) {
+                    int temp = frames[j];
+                    frames[j] = frames[j + 1];
+                    frames[j + 1] = temp;
+                }
+            }
+        }
+    }
+}
