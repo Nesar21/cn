@@ -1,0 +1,56 @@
+import java.math.BigInteger;
+import java.util.Scanner;
+
+public class RSA {
+    private BigInteger N, e, d;
+
+    public RSA(BigInteger p, BigInteger q, BigInteger e) {
+        N = p.multiply(q);
+        BigInteger phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
+
+        // Validate 'e' before using it
+        if (e.compareTo(BigInteger.ONE) <= 0 || e.compareTo(phi) >= 0 || !phi.gcd(e).equals(BigInteger.ONE)) {
+            throw new IllegalArgumentException("Invalid e. Choose e such that 1 < e < φ(N) and gcd(e, φ) = 1.");
+        }
+
+        this.e = e;  // Assigning after validation
+        d = e.modInverse(phi);  // Compute private key
+    }
+
+    public BigInteger encrypt(BigInteger msg) {
+        return msg.modPow(e, N);
+    }
+
+    public BigInteger decrypt(BigInteger msg) {
+        return msg.modPow(d, N);
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter prime p: ");
+        BigInteger p = sc.nextBigInteger();
+        System.out.print("Enter prime q: ");
+        BigInteger q = sc.nextBigInteger();
+        System.out.print("Enter public exponent e: ");
+        BigInteger e = sc.nextBigInteger();
+
+        try {
+            RSA rsa = new RSA(p, q, e);
+
+            System.out.print("Enter number to encrypt: ");
+            BigInteger msg = sc.nextBigInteger();
+
+            BigInteger encrypted = rsa.encrypt(msg);
+            BigInteger decrypted = rsa.decrypt(encrypted);
+
+            System.out.println("Encrypted: " + encrypted);
+            System.out.println("Decrypted: " + decrypted);
+
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+
+        sc.close();
+    }
+}
