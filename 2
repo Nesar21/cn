@@ -1,0 +1,38 @@
+import java.util.Scanner;
+
+public class crc {
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+        String generator = "1101"; // Fixed generator
+
+        System.out.print("Enter message bits: ");
+        String message = sc.nextLine();
+        String encoded = encode(message, generator);
+        System.out.println("The checksum code is: " + encoded);
+
+        System.out.print("Enter received checksum code: ");
+        String received = sc.nextLine();
+        System.out.println(verify(received, generator) ? "Data stream is valid" : "CRC error occurred.");
+    }
+
+    static String encode(String message, String generator) {
+        String dividend = message + "0".repeat(generator.length() - 1);
+        return message + mod2div(dividend, generator);
+    }
+
+    static boolean verify(String message, String generator) {
+        return mod2div(message, generator).equals("0".repeat(generator.length() - 1));
+    }
+
+    static String mod2div(String dividend, String divisor) {
+        char[] data = dividend.toCharArray();
+        char[] gen = divisor.toCharArray();
+
+        for (int i = 0; i <= data.length - gen.length; i++) {
+            if (data[i] == '1') 
+                for (int j = 0; j < gen.length; j++) 
+                    data[i + j] ^= gen[j] ^ '0';
+        }
+        return new String(data).substring(data.length - (gen.length - 1));
+    }
+}
