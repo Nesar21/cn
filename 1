@@ -1,0 +1,24 @@
+import java.util.*;
+
+public class sort_frames{
+	public static void main(String[] args){
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.printf("Enter the number of frames:\n");
+		int n = sc.nextInt();
+		
+		List<int[]> frames =new ArrayList<>();
+		Random ran = new Random();
+		
+		for(int i=0;i<n;i++){
+			System.out.printf("Enter the data for the frame %d :\n",(i+1));
+			frames.add(new int[]{ran.nextInt(1000)+1,sc.nextInt()});
+			}
+			
+		frames.sort(Comparator.comparing(a -> a[0]));
+		
+		System.out.printf("Sorted frames\n");
+		frames.forEach(f -> System.out.printf("seqNum:%d, frame-data:%d\n", f[0], f[1]));
+		
+		}
+	}
