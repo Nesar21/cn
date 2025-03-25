@@ -1,0 +1,40 @@
+import java.util.Random;
+import java.util.Scanner;
+
+public class RED {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter max packets: ");
+        int maxPackets = scanner.nextInt();
+
+        System.out.print("Enter queue size: ");
+        int queueSize = scanner.nextInt();
+
+        System.out.print("Enter max probability: ");
+        double maxProbability = scanner.nextDouble();
+
+        System.out.print("Enter min probability: ");
+        double minProbability = scanner.nextDouble();
+
+        System.out.print("Enter threshold: ");
+        int threshold = scanner.nextInt();
+
+        simulateCongestion(maxPackets, queueSize, maxProbability, minProbability, threshold);
+    }
+
+    private static void simulateCongestion(int maxPackets, int queueSize, double maxProbability, double minProbability, int threshold) {
+        Random rand = new Random();
+        for (int i = 0, queueLength = 0; i < maxPackets; i++) {
+            double dropProbability = (queueLength >= threshold) ? minProbability + ((maxProbability - minProbability) * (queueLength - threshold)) / (queueSize - threshold) : 0;
+            
+            if (queueLength >= threshold && rand.nextDouble() < dropProbability) {
+                System.out.println("Packet dropped");
+            } else {
+                System.out.println("Packet accepted " + (i + 1));
+                queueLength++;
+            }
+        }
+    }
+}
