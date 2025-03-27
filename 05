@@ -1,4 +1,4 @@
-//server
+//client
 import java.io.*;
 import java.net.*;
 
@@ -25,7 +25,7 @@ class udpc {
 }
 
 
-//client
+//server
 import java.net.*;
 
 class udps {
